@@ -1,0 +1,117 @@
+FORMAT: 1A
+HOST: https://oadapi.apiblueprint.org/
+
+# OAD-API
+
+OAD-API provides a REST API to access and use OUSL Online Activity Diary 
+
+## Auth [/login]
+
+### Login [POST]
+
+This is used to log in as a user. 
+
++ Request (application/json)
+
+        {
+            "user": "212248470",
+            "password": "password"
+        }
+        
++ Response 200 (application/json)
+
+        {
+            "user": "212248470",
+            "authorized": "true",
+            "token":"base64encoded"
+        }
+        
++ Response 401 (application/json)
+        
+        {
+            "user": "212248470",
+            "authorized": "false"
+        }
+
+## Student [/student/{user}/]
+
++ Parameters
+    + user - ID of the logged in user
+
+### Get student data [GET]
+
+Retrieve data for a logged in student.
+    
++ Request (application/json)
+
+    + Headers
+        
+            Authorization : Basic token
+        
++ Response 200 (application/json)
+
+        {
+            "user":"212248470",
+            "name" : "Isuru Pathirana",
+            "programme" : "Computer Engineering"
+        }
+
+## Student Courses [/student/{user}/courses]
+
++ Parameters
+    + user - ID of the logged in user
+
+### Get list of courses [GET]
+
+Get list of  courses regisered by the student
+
++ Request (application/json)
+    + Headers
+    
+            Authorization : Basic token
+            
++ Response 200 (application/json)
+
+        {
+            "user":212248470,
+            "courses":[
+                {
+                    "courseCode":"ECX5247",
+                    "courseName":"Group Project in Software Development"
+                },
+                {
+                    "courseCode":"ECX5245",
+                    "courseName":"Database Management Systems"
+                }
+            ]
+        }
+        
+### Add new course [POST]
+
+Add new course for a student
+    
++ Request (application/json)
+    + Headers
+    
+            Authorization : Basic token
+            
+    + Body
+    
+            {
+                "user":212248470,
+                "course":"ECX5236"
+            }
+            
++ Response 200 
+
+## Remove course [DELETE]
+
+Remove a course from student's course list
+
++ Request (application/json)
+    
+    + Headers
+    
+            Authorization : Basic token
+            
++ Response 200
