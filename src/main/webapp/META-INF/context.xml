@@ -1,0 +1,8 @@
+<context>
+
+    <!-- DataSource definition-->
+    <Resource name="connpool" auth="Container" type="javax.sql.DataSource"
+              maxActive="100" maxIdle="30" maxWait="10000"
+              username="root" password="cheng3" driverClassName="com.mysql.jdbc.Driver"
+              url="jdbc:mysql://localhost:3306/oad"/>
+</context>
