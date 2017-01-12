@@ -5,7 +5,7 @@
     <artifactId>oad</artifactId>
     <packaging>war</packaging>
     <version>0.0.1</version>
-    <name>oad Maven Webapp</name>
+    <name>oad-api</name>
     <url>http://maven.apache.org</url>
     <dependencies>
 
