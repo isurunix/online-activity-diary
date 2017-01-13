@@ -9,14 +9,14 @@ public class Course {
     private String courseCoordinator;
     private String academicCoordinator;
 
-    public Course(String courseCode, String name, String courseCoordinator, String academicCoordinator) {
+    public Course(String courseCode, String name, String courseCoordinator, String academicCoordinator, int deptId) {
         this.courseCode = courseCode;
         this.name = name;
         this.courseCoordinator = courseCoordinator;
         this.academicCoordinator = academicCoordinator;
     }
 
-    public Course(String courseCode, String name) {
+    public Course(String courseCode, String name, String acedamicCoodi, int deptId) {
         this.courseCode = courseCode;
         this.name = name;
     }
