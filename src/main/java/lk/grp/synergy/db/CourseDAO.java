@@ -43,7 +43,7 @@ public class CourseDAO {
         return courses;
     }
 
-    public Course getCourseBycode(String course_code) throws SQLException, NamingException {
+    public Course getCourseBycode(String code) throws SQLException, NamingException {
         String sql = "SELECT * FROM course WHERE course_code=?";
         Course course = null;
 
@@ -51,7 +51,7 @@ public class CourseDAO {
                 Connection con = DBConnector.getConnection();
                 PreparedStatement pstmt = con.prepareStatement(sql)
         ){
-            pstmt.setString(1,course_code);
+            pstmt.setString(1,code);
             ResultSet resultSet = pstmt.executeQuery();
 
             if(resultSet!=null){
