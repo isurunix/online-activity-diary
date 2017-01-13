@@ -23,8 +23,8 @@ public class StudentDAO {
         String sql = "SELECT * FROM student";
 
         try(
-                Connection con = DBConnector.getConnection();
-                PreparedStatement prStmt = con.prepareStatement(sql)
+            Connection con = DBConnector.getConnection();
+            PreparedStatement prStmt = con.prepareStatement(sql)
         ){
             ResultSet resultSet = prStmt.executeQuery();
             if(resultSet!=null){
@@ -54,8 +54,8 @@ public class StudentDAO {
         Student student = null;
 
         try(
-                Connection con = DBConnector.getConnection();
-                PreparedStatement pstmt = con.prepareStatement(sql)
+            Connection con = DBConnector.getConnection();
+            PreparedStatement pstmt = con.prepareStatement(sql)
         ){
             pstmt.setInt(1,studentId);
             ResultSet resultSet = pstmt.executeQuery();
@@ -75,4 +75,24 @@ public class StudentDAO {
 
         return student;
     }
+
+    /**
+     * Delete student with given id from the database
+     * @param studentId the id of the student to delete
+     * @return true if removed false otherwise
+     */
+    public boolean deleteStudent(int studentId) throws SQLException, NamingException {
+        String sql = "DELETE FROM student WHERE student_id=?";
+        boolean deleted = false;
+
+        try(
+            Connection con = DBConnector.getConnection();
+            PreparedStatement pstm = con.prepareStatement(sql)
+        ){
+            pstm.setInt(1,studentId);
+            deleted = pstm.executeUpdate() == 1;
+        }
+        return deleted;
+    }
+
 }
