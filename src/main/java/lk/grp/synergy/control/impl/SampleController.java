@@ -12,7 +12,6 @@ public class SampleController implements SampleControllerInterface{
      * Please remove this class once you begin actual development work
      */
 
-    @Override
     public void sampleMethod() {
         //This is just a sample
     }
