@@ -23,8 +23,8 @@ public class StudentDAO {
         String sql = "SELECT * FROM student";
 
         try(
-            Connection con = DBConnector.getConnection();
-            PreparedStatement prStmt = con.prepareStatement(sql)
+                Connection con = DBConnector.getConnection();
+                PreparedStatement prStmt = con.prepareStatement(sql)
         ){
             ResultSet resultSet = prStmt.executeQuery();
             if(resultSet!=null){
@@ -54,8 +54,8 @@ public class StudentDAO {
         Student student = null;
 
         try(
-            Connection con = DBConnector.getConnection();
-            PreparedStatement pstmt = con.prepareStatement(sql)
+                Connection con = DBConnector.getConnection();
+                PreparedStatement pstmt = con.prepareStatement(sql)
         ){
             pstmt.setInt(1,studentId);
             ResultSet resultSet = pstmt.executeQuery();
