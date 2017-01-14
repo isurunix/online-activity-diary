@@ -69,4 +69,19 @@ public class CourseDAO {
         return course;
     }
 
+    public boolean deleteCode(String Code) throws SQLException, NamingException {
+        String sql = "DELETE FROM course WHERE course_code=?";
+        boolean deleted = false;
+
+        try(
+                Connection con = DBConnector.getConnection();
+                PreparedStatement pstm = con.prepareStatement(sql)
+        ){
+            pstm.setString(1,Code);
+            deleted = pstm.executeUpdate() == 1;
+        }
+        return deleted;
+    }
+
 }
+
