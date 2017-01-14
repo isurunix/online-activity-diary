@@ -5,6 +5,9 @@ import lk.grp.synergy.model.Notification;
 
 import javax.naming.NamingException;
 import java.sql.*;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
 
 /**
@@ -32,11 +35,11 @@ public class NotificationDAO {
                     int channel = resultSet.getInt("channel");
                     String from = resultSet.getString("from");
                     String to = resultSet.getString("to");
-                    Time scheduledTime = resultSet.getTime("scheduled_time");
-                    Time deliveredTime = resultSet.getTime("delivered_time");
+                    LocalDateTime scheduledTime = resultSet.getTimestamp("scheduled_time").toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
+                    LocalDateTime deliveredTime = resultSet.getTimestamp("delivered_time").toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
                     int stdId = resultSet.getInt("student_id");
 
-                    notifications.add(new Notification(id,msg, channel, from, scheduledTime, stdId));
+                    notifications.add(new Notification(id,stdId,msg,channel,from,to,scheduledTime,deliveredTime));
                 }
             }
         }
@@ -44,7 +47,7 @@ public class NotificationDAO {
         return notifications;
     }
 
-    public Course getNotificationById(int notificationId) throws SQLException, NamingException {
+    public Notification getNotificationById(int notificationId) throws SQLException, NamingException {
         String sql = "SELECT * FROM notification WHERE notification_id=?";
         Notification notification = null;
 
@@ -61,11 +64,11 @@ public class NotificationDAO {
                     int channel = resultSet.getInt("channel");
                     String from = resultSet.getString("from");
                     String to = resultSet.getString("to");
-                    Time scheduledTime = resultSet.getTime("scheduled_time");
-                    Time deliveredTime = resultSet.getTime("delivered_time");
+                    LocalDateTime scheduledTime = resultSet.getTimestamp("scheduled_time").toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
+                    LocalDateTime deliveredTime = resultSet.getTimestamp("delivered_time").toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
                     int stdId = resultSet.getInt("student_id");
 
-                    notification = new Notification(msg, channel, from, to, scheduledTime, deliveredTime, stdId);
+                    notification = new Notification(notificationId,stdId,msg,channel,from,to,scheduledTime,deliveredTime);
                 }
             }
         }

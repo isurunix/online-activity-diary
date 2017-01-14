@@ -8,13 +8,24 @@ import java.time.LocalDateTime;
  */
 public class Notification {
     private int notificationId;
-    private String studentId;
+    private int studentId;
     private String message;
     private int channel;
     private String from;
     private String to;
     private LocalDateTime scheduledTime;
     private LocalDateTime deliveredTime;
+
+    public Notification(int notificationId, int studentId, String message, int channel, String from, String to, LocalDateTime scheduledTime, LocalDateTime deliveredTime) {
+        this.notificationId = notificationId;
+        this.studentId = studentId;
+        this.message = message;
+        this.channel = channel;
+        this.from = from;
+        this.to = to;
+        this.scheduledTime = scheduledTime;
+        this.deliveredTime = deliveredTime;
+    }
 
     public int getNotificationId() {
         return notificationId;
@@ -24,11 +35,11 @@ public class Notification {
         this.notificationId = notificationId;
     }
 
-    public String getStudentId() {
+    public int getStudentId() {
         return studentId;
     }
 
-    public void setStudentId(String studentId) {
+    public void setStudentId(int studentId) {
         this.studentId = studentId;
     }
 
