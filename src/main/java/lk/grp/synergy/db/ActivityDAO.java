@@ -83,4 +83,25 @@ public class ActivityDAO {
 
         return activity;
     }
+
+    /**
+     * Delete activity with given id from the database
+     * @param activityId the id of the activity to delete
+     * @return true if removed false otherwise
+     */
+    public boolean deleteActivity(int activityId) throws SQLException, NamingException {
+        String sql = "DELETE FROM activity WHERE activity_id=?";
+        boolean deleted = false;
+
+        try(
+                Connection con = DBConnector.getConnection();
+                PreparedStatement pstm = con.prepareStatement(sql)
+        ){
+            pstm.setInt(1,activityId);
+            deleted = pstm.executeUpdate() == 1;
+        }
+        return deleted;
+    }
+
 }
+
