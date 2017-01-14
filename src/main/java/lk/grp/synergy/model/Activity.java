@@ -17,8 +17,9 @@ public class Activity {
     private LocalTime endTime;
     private String venue;
     private String group;
+    private String courseCode;
 
-    public Activity(int activityId, ActivityType activityType, String name, LocalDate date, LocalTime startTime, LocalTime endTime, String venue, String group) {
+    public Activity(int activityId, ActivityType activityType, String name, LocalDate date, LocalTime startTime, LocalTime endTime, String venue, String group, String courseCode) {
         this.activityId = activityId;
         this.activityType = activityType;
         this.name = name;
@@ -27,9 +28,10 @@ public class Activity {
         this.endTime = endTime;
         this.venue = venue;
         this.group = group;
+        this.courseCode = courseCode;
     }
 
-    public Activity(int activityId, ActivityType activityType, String name, LocalDate date, LocalTime startTime, LocalTime endTime, String venue) {
+    public Activity(int activityId, ActivityType activityType, String name, LocalDate date, LocalTime startTime, LocalTime endTime, String venue, String courseCode) {
         this.activityId = activityId;
         this.activityType = activityType;
         this.name = name;
@@ -37,6 +39,7 @@ public class Activity {
         this.startTime = startTime;
         this.endTime = endTime;
         this.venue = venue;
+        this.courseCode = courseCode;
         this.group="NA";
     }
 
@@ -121,5 +124,13 @@ public class Activity {
     @Override
     public int hashCode() {
         return activityId;
+    }
+
+    public String getCourseCode() {
+        return courseCode;
+    }
+
+    public void setCourseCode(String courseCode) {
+        this.courseCode = courseCode;
     }
 }

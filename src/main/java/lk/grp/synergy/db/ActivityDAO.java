@@ -1,9 +1,12 @@
 package lk.grp.synergy.db;
 
 import lk.grp.synergy.model.Activity;
+import lk.grp.synergy.util.ActivityType;
 
 import javax.naming.NamingException;
 import java.sql.*;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 
 /**
@@ -15,7 +18,7 @@ public class ActivityDAO {
 
     }
 
-    public ArrayList<Activity> getAllActivity() throws SQLException, NamingException {
+    public ArrayList<Activity> getAllActivities() throws SQLException, NamingException {
         ArrayList<Activity> activities = new ArrayList<>();
         String sql = "SELECT * FROM activity";
 
@@ -28,14 +31,15 @@ public class ActivityDAO {
                 while(resultSet.next()){
                     int id = resultSet.getInt("activity_id");
                     String name = resultSet.getString("name");
-                    Date date = resultSet.getDate("date");
-                    Time str_time = resultSet.getTime("start_time");
-                    Time end_time = resultSet.getTime("end_time");
+                    String type = resultSet.getString("type");
+                    LocalDate date = resultSet.getDate("date").toLocalDate();
+                    LocalTime startTime = resultSet.getTime("start_time").toLocalTime();
+                    LocalTime endTime = resultSet.getTime("end_time").toLocalTime();
                     String venue = resultSet.getString("venue");
                     String group = resultSet.getString("group");
                     String code = resultSet.getString("course_code");
 
-                    activities.add(new Activity(id,name,date,str_time,end_time,venue,group,code));
+                    activities.add(new Activity(id,ActivityType.valueOf(type),name,date,startTime,endTime,venue,group,code));
                 }
             }
         }
@@ -61,15 +65,18 @@ public class ActivityDAO {
 
             if(resultSet!=null){
                 while (resultSet.next()){
+                    int id = resultSet.getInt("activity_id");
                     String name = resultSet.getString("name");
-                    Date date = resultSet.getDate("date");
-                    Time str_time = resultSet.getTime("start_time");
-                    Time end_time = resultSet.getTime("end_time");
+                    String type = resultSet.getString("type");
+                    LocalDate date = resultSet.getDate("date").toLocalDate();
+                    LocalTime startTime = resultSet.getTime("start_time").toLocalTime();
+                    LocalTime endTime = resultSet.getTime("end_time").toLocalTime();
                     String venue = resultSet.getString("venue");
                     String group = resultSet.getString("group");
                     String code = resultSet.getString("course_code");
 
-                    activity = new Activity(activityId,name,date,str_time,end_time,venue,group,code);
+
+                    activity = new Activity(id,ActivityType.valueOf(type),name,date,startTime,endTime,venue,group,code);
                 }
             }
         }
