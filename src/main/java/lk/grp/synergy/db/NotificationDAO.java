@@ -36,7 +36,7 @@ public class NotificationDAO {
                     Time deliveredTime = resultSet.getTime("delivered_time");
                     int stdId = resultSet.getInt("student_id");
 
-                    notifications.add(new Notification(id,msg, channel, from, scheduledTime, stdId));
+                    notifications.add(new Notification(id,msg, channel, from, to, scheduledTime, deliveredTime, stdId));
                 }
             }
         }
