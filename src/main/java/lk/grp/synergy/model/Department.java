@@ -16,7 +16,7 @@ public class Department {
         this.deptTelephone = deptTelephone;
     }
 
-    public Department(int deptId, String deptName) {
+    public Department(int deptId, String name, String deptName, int telephone, int facId) {
         this.deptId = deptId;
         this.deptName = deptName;
     }
