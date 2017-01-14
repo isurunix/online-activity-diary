@@ -21,7 +21,7 @@ public class Faculty {
         this.facName = facName;
     }
 
-    public Faculty() {
+    public Faculty(int id, String name, int telephone, String email) {
 
     }
 
