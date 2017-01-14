@@ -73,4 +73,26 @@ public class NotificationDAO {
         return notification;
     }
 
+    /**
+     * Delete notification with given id from the database
+     * @param notificationId the id of the notification to delete
+     * @return true if removed false otherwise
+     */
+    public boolean deleteNotification(int notificationId) throws SQLException, NamingException {
+        String sql = "DELETE FROM notification WHERE notification_id=?";
+        boolean deleted = false;
+
+        try(
+                Connection con = DBConnector.getConnection();
+                PreparedStatement pstm = con.prepareStatement(sql)
+        ){
+            pstm.setInt(1,notificationId);
+            deleted = pstm.executeUpdate() == 1;
+        }
+        return deleted;
+    }
+
+}
+
+
 }
