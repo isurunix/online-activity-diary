@@ -30,13 +30,14 @@ public class StudentDAO {
             if(resultSet!=null){
                 while(resultSet.next()){
                     int id = resultSet.getInt("student_id");
+                    String passwordHash = resultSet.getString("password");
                     String name = resultSet.getString("name");
                     String email = resultSet.getString("email");
                     int telephone = resultSet.getInt("telephone");
                     int notificationFreq = resultSet.getInt("notif_freq_level");
                     int channel = resultSet.getInt("notif_channel");
 
-                    students.add(new Student(id,name,email,telephone,notificationFreq,channel));
+                    students.add(new Student(id, passwordHash, name,email,telephone,notificationFreq,channel));
                 }
             }
         }
@@ -63,12 +64,13 @@ public class StudentDAO {
             if(resultSet!=null){
                 while (resultSet.next()){
                     String name = resultSet.getString("name");
+                    String passwordHash = resultSet.getString("password");
                     String email = resultSet.getString("email");
                     int telephone = resultSet.getInt("telephone");
                     int notificationFreq = resultSet.getInt("notif_freq_level");
                     int channel = resultSet.getInt("notif_channel");
 
-                    student = new Student(studentId,name,email,telephone,notificationFreq,channel);
+                    student = new Student(studentId, passwordHash, name,email,telephone,notificationFreq,channel);
                 }
             }
         }

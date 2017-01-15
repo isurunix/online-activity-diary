@@ -5,14 +5,16 @@ package lk.grp.synergy.model;
  */
 public class Student {
     private int studentId;
+    private String passwordHash;
     private String name;
     private String email;
     private int telephone;
     private int notificationFrequency;
     private int notificationChannel;
 
-    public Student(int studentId, String name, String email, int telephone, int notificationFrequency, int notificationChannel) {
+    public Student(int studentId, String passwordHash, String name, String email, int telephone, int notificationFrequency, int notificationChannel) {
         this.studentId = studentId;
+        this.passwordHash = passwordHash;
         this.name = name;
         this.email = email;
         this.telephone = telephone;
@@ -85,5 +87,13 @@ public class Student {
     @Override
     public int hashCode() {
         return studentId;
+    }
+
+    public String getPasswordHash() {
+        return passwordHash;
+    }
+
+    public void setPasswordHash(String passwordHash) {
+        this.passwordHash = passwordHash;
     }
 }
