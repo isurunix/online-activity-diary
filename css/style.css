@@ -1,0 +1,56 @@
+.class1{
+	/*background: red;*/
+}
+
+.class2{
+	/*background: green;*/
+}
+
+.class3{
+	/*background: blue;*/
+}
+
+.class4{
+	/*background: yellow;*/
+}
+
+.row{
+	font-family: sans-serif;
+}
+
+a:hover{
+	text-decoration: none;
+}
+
+.col-lg-9{
+	background: gray;
+}
+
+.nestedCol3{
+	background: skyblue;
+}
+
+.navbar-default{
+  padding-left: 20px;
+  padding-right: 20px;
+  background-color: #ff9d40;
+}
+
+.navbar-brand{
+  color:#ffffff !important;
+}
+
+.navbar-nav a{
+  color:#ffffff !important;
+}
+
+.navbar-nav .active a{
+  color:#ffffff !important;
+  background-color: #ff9d40 !important;
+  border: 2px solid;
+  border-color: #e3e3e3;
+  border-radius: 6px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  margin-top: 8px;
+}
