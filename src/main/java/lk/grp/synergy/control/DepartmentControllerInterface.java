@@ -1,0 +1,31 @@
+package lk.grp.synergy.control;
+
+import lk.grp.synergy.model.Department;
+
+import java.util.List;
+
+/**
+ * Created by isuru on 1/19/17.
+ */
+public interface DepartmentControllerInterface {
+
+    /**
+     * Get list of all departments
+     * @return List of all apartments
+     */
+    public List<Department> getAllDepartments();
+
+    /**
+     * Update department details
+     * @param department Department with updated details
+     * @return true if updated false otherwise
+     */
+    public boolean updateDepartment(Department department);
+
+    /**
+     * Remove department details
+     * @param department Department to remove from database
+     * @return true if removed false otherwise
+     */
+    public boolean removeDepartment(Department department);
+}
