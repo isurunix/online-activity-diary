@@ -10,7 +10,7 @@ public class FacultyController implements FacultyControllerInterface{
 
     @Override
     public void addFaculty(Faculty faculty) {
-        
+
     }
 
     @Override
