@@ -18,6 +18,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -47,7 +48,7 @@ public class OADService {
         }
 
         if(student != null){
-            return Response.ok(student).build();
+            return Response.ok(gson.toJson(student)).build();
         }
 
         JsonObject jsonResponse = new JsonObject();
@@ -61,7 +62,7 @@ public class OADService {
     @GET
     @Path("student/{id}/course")
     @Produces("application/json")
-    public Response getCourseList(@PathParam("id") String studentId){
+    public Response getCourseList(@PathParam("id") String studentId) throws NamingException {
         List<Course> courseList = null;
         try {
             courseList = studentController.getCourseList(studentId);
@@ -71,7 +72,8 @@ public class OADService {
         }
 
         if(courseList != null){
-            return Response.status(200).entity(courseList).build();
+            String json = gson.toJson(courseList);
+            return Response.status(200).entity(json).build();
         }
 
         JsonObject jsonResponse = new JsonObject();
@@ -96,7 +98,7 @@ public class OADService {
         }
 
         if(course!=null){
-            return Response.status(200).entity(course).build();
+            return Response.status(200).entity(gson.toJson(course)).build();
         }
 
         JsonObject jsonResponse = new JsonObject();
@@ -120,8 +122,8 @@ public class OADService {
             e.printStackTrace();
         }
 
-        if(activities != null){
-            return Response.status(200).entity(activities).build();
+        if(activities != null && activities.size()!=0){
+            return Response.status(200).entity(gson.toJson(activities)).build();
         }
 
         JsonObject jsonResponse = new JsonObject();
