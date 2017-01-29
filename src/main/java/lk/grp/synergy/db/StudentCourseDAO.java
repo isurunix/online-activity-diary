@@ -1,7 +1,5 @@
 package lk.grp.synergy.db;
 
-import lk.grp.synergy.model.StudentCourse;
-
 import javax.naming.NamingException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
