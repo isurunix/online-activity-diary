@@ -146,3 +146,31 @@ a:hover{
   border: 1px solid;
   border-radius: 4px;
 }
+
+.main-area{
+  background-color: #ff9d40;
+  color: white;
+  margin-top: 200px;
+}
+
+.main-area button{
+  background-color: white;
+  color: #ff9d40;
+}
+
+.area-title{
+  font-size: 18px;
+}
+
+.row{
+  margin-right: 0;
+}
+
+.sign-in-input{
+  border: none;
+  color: black;
+}
+
+.sign-in-button{
+  margin-bottom: 10px;
+}
