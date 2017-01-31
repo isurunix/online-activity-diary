@@ -6,6 +6,7 @@ import lk.grp.synergy.util.ActivityType;
 import javax.naming.NamingException;
 import java.sql.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 
@@ -38,6 +39,68 @@ public class ActivityDAO {
                     String venue = resultSet.getString("venue");
                     String group = resultSet.getString("group");
                     String code = resultSet.getString("course_code");
+
+                    activities.add(new Activity(id,ActivityType.valueOf(type),name,date,startTime,endTime,venue,group,code));
+                }
+            }
+        }
+
+        return activities;
+    }
+
+    public ArrayList<Activity> getAllActivities(String courseCode) throws SQLException, NamingException {
+        ArrayList<Activity> activities = new ArrayList<>();
+        String sql = "SELECT * FROM activity WHERE course_code=?";
+
+        try(
+                Connection con = DBConnector.getConnection();
+                PreparedStatement prStmt = con.prepareStatement(sql)
+        ){
+            prStmt.setString(1,courseCode);
+            ResultSet resultSet = prStmt.executeQuery();
+            if(resultSet!=null){
+                while(resultSet.next()){
+                    int id = resultSet.getInt("activity_id");
+                    String name = resultSet.getString("name");
+                    String type = resultSet.getString("type");
+                    LocalDate date = resultSet.getDate("date").toLocalDate();
+                    LocalTime startTime = resultSet.getTime("start_time").toLocalTime();
+                    LocalTime endTime = resultSet.getTime("end_time").toLocalTime();
+                    String venue = resultSet.getString("venue");
+                    String group = resultSet.getString("group");
+                    String code = courseCode;
+
+                    activities.add(new Activity(id,ActivityType.valueOf(type),name,date,startTime,endTime,venue,group,code));
+                }
+            }
+        }
+
+        return activities;
+    }
+
+    public ArrayList<Activity> getAllActivities(String courseCode, LocalDate from, LocalDate to) throws SQLException, NamingException {
+        ArrayList<Activity> activities = new ArrayList<>();
+        String sql = "SELECT * FROM activity WHERE course_code=? AND date BETWEEN ? AND ?";
+
+        try(
+                Connection con = DBConnector.getConnection();
+                PreparedStatement prStmt = con.prepareStatement(sql)
+        ){
+            prStmt.setString(1,courseCode);
+            prStmt.setDate(2,Date.valueOf(from));
+            prStmt.setDate(3,Date.valueOf(to));
+            ResultSet resultSet = prStmt.executeQuery();
+            if(resultSet!=null){
+                while(resultSet.next()){
+                    int id = resultSet.getInt("activity_id");
+                    String name = resultSet.getString("name");
+                    String type = resultSet.getString("type");
+                    LocalDate date = resultSet.getDate("date").toLocalDate();
+                    LocalTime startTime = resultSet.getTime("start_time").toLocalTime();
+                    LocalTime endTime = resultSet.getTime("end_time").toLocalTime();
+                    String venue = resultSet.getString("venue");
+                    String group = resultSet.getString("group");
+                    String code = courseCode;
 
                     activities.add(new Activity(id,ActivityType.valueOf(type),name,date,startTime,endTime,venue,group,code));
                 }

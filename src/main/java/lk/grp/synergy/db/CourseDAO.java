@@ -57,11 +57,11 @@ public class CourseDAO {
             if(resultSet!=null){
                 while (resultSet.next()){
                     String name = resultSet.getString("name");
-                    String courseCoodi = resultSet.getString("course_coodinator");
-                    String acedamicCoodi = resultSet.getString("acedamic_coodinator");
+                    String courseCoodi = resultSet.getString("course_coordinator");
+                    String acedamicCoodi = resultSet.getString("academic_coordinator");
                     int deptId = resultSet.getInt("dept_id");
 
-                    course = new Course(name, courseCoodi, acedamicCoodi, deptId);
+                    course = new Course(code, name, acedamicCoodi, deptId);
                 }
             }
         }

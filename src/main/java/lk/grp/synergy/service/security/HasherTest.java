@@ -9,7 +9,7 @@ public class HasherTest {
 
     @org.junit.Test
     public void hash() throws Exception {
-        String plainTxt = "thisisplaintext";
+        String plainTxt = "isurunix";
         String hashOne = Hasher.hash(plainTxt);
         System.out.println("Hash (1) : "+hashOne);
         String hashTwo = Hasher.hash(plainTxt);

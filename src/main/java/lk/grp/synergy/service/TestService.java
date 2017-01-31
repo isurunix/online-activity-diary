@@ -25,7 +25,7 @@ public class TestService {
     public Response testService(){
         JsonObject responseJson = new JsonObject();
         responseJson.addProperty("responseId", RandomStringUtils.randomAlphanumeric(12));
-        responseJson.addProperty("message","Test Successful");
+        responseJson.addProperty("message","Test JRebel");
 
         return Response.ok(gson.toJson(responseJson), MediaType.APPLICATION_JSON_TYPE).build();
     }
