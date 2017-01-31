@@ -174,3 +174,51 @@ a:hover{
 .sign-in-button{
   margin-bottom: 10px;
 }
+
+.large-button{
+  width: 150px;
+  height: 40px;
+  margin-left: 10px;
+  margin-top: 5px;
+  margin-bottom: 10px;
+  background-color: white;
+  border-color: black;
+  border: 1px solid;
+  border-radius: 4px;
+}
+
+.active-button{
+  background-color: #ff9d40;
+  border-color: #ff9d40;
+  color: white;
+}
+
+.change-pwd-input{
+  border: 1px solid black;
+  border-radius: 4px;
+  color: black;
+}
+
+.change-pwd-dropdown{
+  border: 1px solid black;
+  border-radius: 4px;
+  color: red;
+  height: 20px;
+  width: 100%;
+}
+
+.settings-content{
+  border: 1px solid black;
+  border-radius: 4px;
+  padding-top: 15px;
+  padding-bottom: 15px;
+}
+
+.settings-buttons-container{
+  padding-right: 0;
+  margin-right: 0;
+}
+
+.settings-body{
+  margin-top: 20px;
+}
