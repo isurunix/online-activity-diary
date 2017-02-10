@@ -12,13 +12,20 @@ import lk.grp.synergy.control.impl.StudentControllerImpl;
 import lk.grp.synergy.model.Activity;
 import lk.grp.synergy.model.Course;
 import lk.grp.synergy.model.Student;
+import lk.grp.synergy.util.DateDeserializer;
+import lk.grp.synergy.util.DateSerializer;
+import lk.grp.synergy.util.TimeDeserializer;
+import lk.grp.synergy.util.TimeSerializer;
 
 import javax.naming.NamingException;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -27,7 +34,13 @@ import java.util.List;
 @Path("/")
 public class OADService {
 
-    private Gson gson = new GsonBuilder().setPrettyPrinting().create();
+    private Gson gson = new GsonBuilder()
+            .setPrettyPrinting()
+            .registerTypeAdapter(LocalDate.class, new DateSerializer())
+            .registerTypeAdapter(LocalDate.class, new DateDeserializer())
+            .registerTypeAdapter(LocalTime.class, new TimeSerializer())
+            .registerTypeAdapter(LocalTime.class, new TimeDeserializer())
+            .create();
 
     private StudentControllerInterface studentController = new StudentControllerImpl();
     private CourseControllerInterface courseController = new CourseController();
@@ -53,6 +66,30 @@ public class OADService {
 
         JsonObject jsonResponse = new JsonObject();
         jsonResponse.addProperty("userId",userId);
+        jsonResponse.addProperty("errorCode","404");
+        jsonResponse.addProperty("error","Resource Not Found");
+
+        return Response.ok(gson.toJson(jsonResponse), MediaType.APPLICATION_JSON).build();
+    }
+
+    @GET
+    @Path("student/{id}/activities")
+    @Produces("application/json")
+    public Response getAllActivities(@PathParam("id") String studentId) throws NamingException {
+        List<Activity> activities = null;
+        try {
+            activities = studentController.getActivities(Integer.parseInt(studentId));
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return Response.serverError().build();
+        }
+
+        if(activities != null){
+            String json = gson.toJson(activities);
+            return Response.status(200).entity(json).build();
+        }
+
+        JsonObject jsonResponse = new JsonObject();
         jsonResponse.addProperty("errorCode","404");
         jsonResponse.addProperty("error","Resource Not Found");
 
