@@ -1,5 +1,6 @@
 package lk.grp.synergy.control;
 
+import lk.grp.synergy.model.Activity;
 import lk.grp.synergy.model.Course;
 import lk.grp.synergy.model.Student;
 
@@ -18,4 +19,6 @@ public interface StudentControllerInterface {
     public Student updateStudent(Student student) throws SQLException;
 
     public List<Course> getCourseList(String studentId) throws SQLException, NamingException;
+
+    List<Activity> getActivities(int studentId) throws SQLException, NamingException;
 }
