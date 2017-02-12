@@ -97,4 +97,23 @@ public class StudentDAO {
         return deleted;
     }
 
+    public boolean updateStudent(Student student) throws SQLException, NamingException {
+        String sql = "UPDATE student SET name=?, email=?, notif_freq_level=?, notif_channel=?, password=? WHERE student_id=?";
+        boolean updated = false;
+        try(
+                Connection con = DBConnector.getConnection();
+                PreparedStatement pstm = con.prepareStatement(sql)
+        ){
+            pstm.setString(1,student.getName());
+            pstm.setString(2,student.getEmail());
+            pstm.setInt(3,student.getNotificationFrequency());
+            pstm.setInt(4,student.getNotificationChannel());
+            pstm.setString(5,student.getPasswordHash());
+            pstm.setInt(6,student.getStudentId());
+
+            updated = pstm.executeUpdate() == 1;
+        }
+        return updated;
+    }
+
 }

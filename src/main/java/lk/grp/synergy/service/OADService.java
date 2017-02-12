@@ -3,6 +3,7 @@ package lk.grp.synergy.service;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import lk.grp.synergy.control.ActivityControllerInterface;
 import lk.grp.synergy.control.CourseControllerInterface;
 import lk.grp.synergy.control.StudentControllerInterface;
@@ -12,6 +13,7 @@ import lk.grp.synergy.control.impl.StudentControllerImpl;
 import lk.grp.synergy.model.Activity;
 import lk.grp.synergy.model.Course;
 import lk.grp.synergy.model.Student;
+import lk.grp.synergy.service.security.Hasher;
 import lk.grp.synergy.util.DateDeserializer;
 import lk.grp.synergy.util.DateSerializer;
 import lk.grp.synergy.util.TimeDeserializer;
@@ -41,6 +43,8 @@ public class OADService {
             .registerTypeAdapter(LocalTime.class, new TimeSerializer())
             .registerTypeAdapter(LocalTime.class, new TimeDeserializer())
             .create();
+
+    private JsonParser jsonParser = new JsonParser();
 
     private StudentControllerInterface studentController = new StudentControllerImpl();
     private CourseControllerInterface courseController = new CourseController();
@@ -169,4 +173,49 @@ public class OADService {
 
         return Response.ok(gson.toJson(jsonResponse), MediaType.APPLICATION_JSON).build();
     }
+
+    @PUT
+    @Path("student/{id}")
+    @Consumes("application/json")
+    public Response updateStudentProfile(@PathParam("id") String sId, String payload){
+
+        JsonObject jsonResponse = new JsonObject();
+        System.out.println(payload);
+        try {
+            Student student = studentController.getStudent(sId);
+            JsonObject jsonPayload = jsonParser.parse(payload).getAsJsonObject();
+
+            if(jsonPayload.has("name")) {
+                student.setName(jsonPayload.get("name").getAsString());
+                student.setEmail(jsonPayload.get("email").getAsString());
+            }else if(jsonPayload.has("currentPassword")){
+                String oldPwd = Hasher.hash(jsonPayload.get("currentPassword").getAsString());
+                if(oldPwd.equals(student.getPasswordHash())){
+                    student.setPasswordHash(Hasher.hash(jsonPayload.get("newPassword").getAsString()));
+                    boolean status = studentController.updateStudentProfileInfo(student);
+
+                    if(status){
+                        jsonResponse.addProperty("responseCode","200");
+                        jsonResponse.addProperty("description","success");
+                    }else{
+                        jsonResponse.addProperty("responseCode","304");
+                        jsonResponse.addProperty("description","failed");
+                    }
+                }else{
+                    jsonResponse.addProperty("responseCode","304");
+                    jsonResponse.addProperty("description","Incorrect current password");
+                }
+            }
+
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (NamingException e) {
+            e.printStackTrace();
+        }
+
+        return Response.ok(gson.toJson(jsonResponse), MediaType.APPLICATION_JSON).build();
+    }
+
+
 }

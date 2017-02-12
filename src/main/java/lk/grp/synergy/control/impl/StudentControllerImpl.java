@@ -48,6 +48,7 @@ public class StudentControllerImpl implements StudentControllerInterface {
 
     @Override
     public Student updateStudent(Student student) throws SQLException {
+
         return null;
     }
 
@@ -78,5 +79,12 @@ public class StudentControllerImpl implements StudentControllerInterface {
 
         return activities;
     }
+
+    @Override
+    public boolean updateStudentProfileInfo(Student student) throws SQLException, NamingException {
+        return studentDAO.updateStudent(student);
+    }
+
+
 
 }

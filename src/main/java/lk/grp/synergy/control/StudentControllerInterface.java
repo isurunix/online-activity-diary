@@ -21,4 +21,6 @@ public interface StudentControllerInterface {
     public List<Course> getCourseList(String studentId) throws SQLException, NamingException;
 
     List<Activity> getActivities(int studentId) throws SQLException, NamingException;
+
+    boolean updateStudentProfileInfo(Student student) throws SQLException, NamingException;
 }
