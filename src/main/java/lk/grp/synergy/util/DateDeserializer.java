@@ -7,6 +7,7 @@ import java.lang.reflect.Type;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
 import com.google.gson.JsonDeserializationContext;
@@ -15,17 +16,9 @@ import com.google.gson.JsonElement;
 
 public class DateDeserializer implements JsonDeserializer<LocalDate>
 {
-    private static final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+    private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     public LocalDate deserialize(JsonElement dateStr, Type typeOfSrc, JsonDeserializationContext context)
     {
-        try
-        {
-            return LocalDate.from(dateFormat.parse(dateStr.getAsString()).toInstant());
-        }
-        catch (ParseException e)
-        {
-            e.printStackTrace();
-        }
-        return null;
+        return LocalDate.parse(dateStr.getAsString(),FORMATTER);
     }
 }

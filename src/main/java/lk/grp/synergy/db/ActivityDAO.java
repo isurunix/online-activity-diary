@@ -9,6 +9,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by USER on 1/13/2017.
@@ -166,5 +167,75 @@ public class ActivityDAO {
         return deleted;
     }
 
+
+    public List<Integer> getCollisions(Activity activity) throws SQLException, NamingException {
+        String sql_1 = "SELECT activity_id FROM activity WHERE date=? AND ((start_time>=? AND start_time<=?) OR " +
+                "(start_time<=? AND ((end_time>? AND end_time<=?) OR end_time>?)))";
+
+        ArrayList<Integer> activityIds = new ArrayList<>();
+
+        try(
+                Connection con = DBConnector.getConnection();
+                PreparedStatement pstm = con.prepareStatement(sql_1)
+        ){
+            pstm.setDate(1,Date.valueOf(activity.getDate()));
+            pstm.setTime(2,Time.valueOf(activity.getStartTime()));
+            pstm.setTime(3,Time.valueOf(activity.getEndTime()));
+            pstm.setTime(4,Time.valueOf(activity.getStartTime()));
+            pstm.setTime(5,Time.valueOf(activity.getStartTime()));
+            pstm.setTime(6,Time.valueOf(activity.getEndTime()));
+            pstm.setTime(7,Time.valueOf(activity.getEndTime()));
+
+            ResultSet resultSet = pstm.executeQuery();
+            while(resultSet.next()){
+                activityIds.add(resultSet.getInt("activity_id"));
+            }
+        }
+
+        return activityIds;
+
+    }
+
+    public boolean addActivity(Activity activity) throws SQLException, NamingException {
+        String sql = "INSERT INTO activity (name, date, start_time, end_time, venue, `group`, course_code, type) VALUES (?,?,?,?,?,?,?,?)";
+        try(
+                Connection con = DBConnector.getConnection();
+                PreparedStatement pstm = con.prepareStatement(sql)
+        ){
+            pstm.setString(1,activity.getName());
+            pstm.setDate(2,Date.valueOf(activity.getDate()));
+            pstm.setTime(3, Time.valueOf(activity.getStartTime()));
+            pstm.setTime(4, Time.valueOf(activity.getEndTime()));
+            pstm.setString(5,activity.getVenue());
+            pstm.setString(6,activity.getGroup());
+            pstm.setString(7,activity.getCourseCode());
+            pstm.setString(8,activity.getActivityType().name());
+
+            return pstm.executeUpdate() == 1;
+        }
+    }
+
+    public boolean updateActivity(Activity activity) throws SQLException, NamingException {
+        String sql =
+                "UPDATE activity " +
+                "SET name=?, date=?, start_time=?, end_time=?, venue=?, `group`=? " +
+                "WHERE activity_id=?";
+        try(
+                Connection con = DBConnector.getConnection();
+                PreparedStatement pstm = con.prepareStatement(sql)
+        ){
+            pstm.setString(1, activity.getName());
+            pstm.setDate(2,Date.valueOf(activity.getDate()));
+            pstm.setTime(3,Time.valueOf(activity.getStartTime()));
+            pstm.setTime(4, Time.valueOf(activity.getEndTime()));
+            pstm.setString(5,activity.getVenue());
+            pstm.setString(6, activity.getGroup());
+            pstm.setInt(7, activity.getActivityId());
+
+            return pstm.executeUpdate() == 1;
+        }
+    }
+
 }
+
 

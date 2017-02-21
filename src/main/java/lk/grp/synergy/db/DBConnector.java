@@ -17,7 +17,9 @@ public class DBConnector {
 
     public static Connection getConnection() throws NamingException, SQLException {
         InitialContext initialContext = new InitialContext();
+        String env = System.getProperty("ENV");
         Context context = (Context) initialContext.lookup("java:comp/env");
+
         //The JDBC Data source that we just created
         DataSource ds = (DataSource) context.lookup("connpool");
         Connection connection = ds.getConnection();

@@ -30,6 +30,8 @@ public interface ActivityControllerInterface {
      */
     public List<Activity> getAllActivitiesWithinPeriod(Course course, LocalDate from, LocalDate to) throws SQLException, NamingException;
 
+    List<Activity> getAllActivities() throws SQLException, NamingException;
+
     /**
      * Update an existing activity
      * @param activity modified activity
@@ -42,7 +44,7 @@ public interface ActivityControllerInterface {
      * @param activity new activity data
      * @return true if added false otherwise
      */
-    public boolean addActivity(Activity activity) throws SQLException;
+    public boolean addActivity(Activity activity) throws SQLException, NamingException;
 
     /**
      * Remove an existing activity
@@ -50,4 +52,6 @@ public interface ActivityControllerInterface {
      * @return true if removed
      */
     public boolean removeActivity(Activity activity) throws SQLException;
+
+    List<Integer> getCollisions(Activity activity) throws SQLException, NamingException;
 }

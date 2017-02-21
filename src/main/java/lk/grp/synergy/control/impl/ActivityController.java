@@ -2,6 +2,7 @@ package lk.grp.synergy.control.impl;
 
 import lk.grp.synergy.control.ActivityControllerInterface;
 import lk.grp.synergy.db.ActivityDAO;
+import lk.grp.synergy.db.NotificationReqDAO;
 import lk.grp.synergy.model.Activity;
 import lk.grp.synergy.model.Course;
 
@@ -9,6 +10,7 @@ import javax.naming.NamingException;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,9 +19,11 @@ import java.util.List;
  */
 public class ActivityController implements ActivityControllerInterface {
     private ActivityDAO activityDAO;
+    private NotificationReqDAO notificationReqDAO;
 
     public ActivityController(){
         activityDAO = new ActivityDAO();
+        notificationReqDAO = new NotificationReqDAO();
     }
 
     @Override
@@ -35,17 +39,35 @@ public class ActivityController implements ActivityControllerInterface {
     }
 
     @Override
+    public List<Activity> getAllActivities() throws SQLException, NamingException {
+        return activityDAO.getAllActivities();
+    }
+
+    @Override
     public boolean updateActivity(Activity activity) throws SQLException {
         return false;
     }
 
     @Override
-    public boolean addActivity(Activity activity)throws SQLException {
-        return false;
+    public boolean addActivity(Activity activity) throws SQLException, NamingException {
+        boolean added = activityDAO.addActivity(activity);
+        if(added){
+            String message = activity.getCourseCode()+": "+activity.getName()+"\n"+
+                    "scheduled on "+activity.getDate().format(DateTimeFormatter.ISO_DATE)+"\n from " +
+                    activity.getStartTime().format(DateTimeFormatter.ofPattern("HH:mm:ss")) + "to" +
+                    activity.getEndTime().format(DateTimeFormatter.ofPattern("HH:mm:ss"));
+            notificationReqDAO.addNotificationReq(message,activity.getCourseCode());
+        }
+        return added;
     }
 
     @Override
     public boolean removeActivity(Activity activity) throws SQLException {
         return false;
+    }
+
+    @Override
+    public List<Integer> getCollisions(Activity activity) throws SQLException, NamingException {
+        return activityDAO.getCollisions(activity);
     }
 }
