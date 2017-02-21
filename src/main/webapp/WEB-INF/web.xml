@@ -3,7 +3,9 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
          version="3.0">
+
     <display-name>oad-api</display-name>
+
     <servlet>
         <servlet-name>OAD REST Service</servlet-name>
         <servlet-class>org.glassfish.jersey.servlet.ServletContainer</servlet-class>
@@ -16,6 +18,21 @@
         <load-on-startup>1</load-on-startup>
     </servlet>
 
+    <servlet>
+        <servlet-name>Login</servlet-name>
+        <jsp-file>/admin/sign-in.jsp</jsp-file>
+    </servlet>
+
+    <servlet>
+        <servlet-name>Home</servlet-name>
+        <jsp-file>/admin/index.jsp</jsp-file>
+    </servlet>
+
+    <filter>
+        <filter-name>AuthFilter</filter-name>
+        <filter-class>lk.grp.synergy.control.servlets.AuthFilter</filter-class>
+    </filter>
+
     <session-config>
         <session-timeout>30</session-timeout>
     </session-config>
@@ -24,6 +41,21 @@
         <servlet-name>OAD REST Service</servlet-name>
         <url-pattern>/oad-api/*</url-pattern>
     </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>Login</servlet-name>
+        <url-pattern>/admin/signin</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>Home</servlet-name>
+        <url-pattern>/admin/home</url-pattern>
+    </servlet-mapping>
+
+    <filter-mapping>
+        <filter-name>AuthFilter</filter-name>
+        <url-pattern>/admin/*</url-pattern>
+    </filter-mapping>
 
     <resource-ref>
         <description>DB Connection</description>

@@ -1,0 +1,254 @@
+.class1{
+	/*background: red;*/
+}
+
+.class2{
+	/*background: green;*/
+}
+
+.class3{
+	/*background: blue;*/
+}
+
+.class4{
+	/*background: yellow;*/
+}
+
+.row{
+	font-family: sans-serif;
+}
+
+a:hover{
+	text-decoration: none;
+}
+
+.col-lg-9{
+	background: gray;
+}
+
+.nestedCol3{
+	background: skyblue;
+}
+
+.navbar-default{
+  padding-left: 20px;
+  padding-right: 20px;
+  background-color: #ff9d40;
+}
+
+.navbar-brand{
+  color:#ffffff !important;
+}
+
+.navbar-nav a{
+  color:#ffffff !important;
+}
+
+.navbar-nav .active a{
+  color:#ffffff !important;
+  background-color: #ff9d40 !important;
+  border: 2px solid;
+  border-color: #e3e3e3;
+  border-radius: 6px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  margin-top: 8px;
+}
+
+a{
+  text-decoration: none;
+  color: white;
+}
+
+a:hover{
+  text-decoration: none;
+  color: #e3e3e3;
+}
+
+.footer-container{
+  width: 96%;
+  margin-left: 35px;
+  margin-right: 35px;
+}
+
+.footer-text{
+  padding-top: 20px;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.first-title{
+  display: inline-block;
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+.dropdown{
+  display: inline-block;
+  width: 100%;
+}
+
+.dropdown-menu{
+  width: 100%;
+}
+
+.btn-primary{
+  color: #000000;
+  background-color: #ffffff;
+  border: 1px solid;
+  border-color: #000000;
+  width: 100%
+}
+
+.btn-primary:hover, .btn-primary:focus, .btn-primary.focus, .btn-primary:active, .btn-primary.active, .open > .dropdown-toggle.btn-primary{
+  color: #000000;
+  background-color: #ffffff;
+  border: 1px solid;
+  border-color: #000000;
+}
+
+.select-row{
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+.col-lg-9{
+  background: none;
+  padding-left: 0px;
+  padding-right: 0px;
+}
+
+.select-section{
+  margin: 0 auto;
+}
+
+.selector-container{
+  margin: 0 auto;
+  margin-bottom: 20px;
+}
+
+.center-content{
+  margin: 0 auto;
+}
+
+.table{
+  width: 90%;
+  margin: 0 auto;
+}
+
+.buttons-container{
+  padding-top: 20px !important;
+  width: 92%;
+}
+
+.bottom-button{
+  width: 100px;
+  height: 30px;
+  margin-left: 10px;
+  background-color: white;
+  border-color: black;
+  border: 1px solid;
+  border-radius: 4px;
+}
+
+.main-area{
+  background-color: #ff9d40;
+  color: white;
+  margin-top: 200px;
+}
+
+.main-area button{
+  background-color: white;
+  color: #ff9d40;
+}
+
+.area-title{
+  font-size: 18px;
+}
+
+.row{
+  margin-right: 0;
+}
+
+.sign-in-input{
+  border: none;
+  color: black;
+}
+
+.sign-in-button{
+  margin-bottom: 10px;
+}
+
+.large-button{
+  width: 150px;
+  height: 40px;
+  margin-left: 10px;
+  margin-top: 5px;
+  margin-bottom: 10px;
+  background-color: white;
+  border-color: black;
+  border: 1px solid;
+  border-radius: 4px;
+}
+
+.active-button{
+  background-color: #ff9d40;
+  border-color: #ff9d40;
+  color: white;
+}
+
+.change-pwd-input{
+  border: 1px solid black;
+  border-radius: 4px;
+  color: black;
+}
+
+.change-pwd-dropdown{
+  border: 1px solid black;
+  border-radius: 4px;
+  height: 25px;
+  padding-top: 2px;
+  width: 50%;
+}
+
+.settings-content{
+  border: 1px solid black;
+  border-radius: 4px;
+  padding-top: 15px;
+  padding-bottom: 15px;
+}
+
+.settings-buttons-container{
+  padding-right: 0;
+  margin-right: 0;
+}
+
+.settings-body{
+  margin-top: 20px;
+}
+
+/* Added datepicker styling - isuru*/
+.datepicker{
+  background-color: white;
+  border-radius: 5px;
+  border: 1px solid black;
+}
+
+#activityDate{
+  background-color: white;
+  border-radius: 5px;
+  border: 1px solid #d0cece;
+}
+
+.fa-calendar {
+  font-size: larger;
+}
+
+.dataTables_filter, .dataTables_info{ display: none; }
+
+.pagination > .active > a, .pagination > .active > a:focus,
+.pagination > .active > a:hover, .pagination > .active > span,
+.pagination > .active > span:focus, .pagination > .active > span:hover{
+  background-color: #FF9D40;
+  border-color: #FF9D40;
+}
