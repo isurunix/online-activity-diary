@@ -4,6 +4,7 @@ import lk.grp.synergy.model.Course;
 
 import javax.naming.NamingException;
 import java.sql.SQLException;
+import java.util.List;
 
 /**
  * Created by isuru on 1/19/17.
@@ -31,4 +32,9 @@ public interface CourseControllerInterface {
      */
     public boolean updateCourse(Course course) throws SQLException;
 
+    /**
+     * Get all exiting course codes
+     * @return List of existing course codes
+     */
+    List<String> getAllCourses() throws SQLException, NamingException;
 }

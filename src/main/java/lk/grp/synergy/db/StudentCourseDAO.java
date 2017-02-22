@@ -49,4 +49,16 @@ public class StudentCourseDAO {
             return pstm.executeUpdate() == 1;
         }
     }
+
+    public boolean removeCourse(int studentId, String courseCode) throws SQLException, NamingException {
+        String sql = "DELETE FROM student_course WHERE student_id=? AND course_code=?";
+        try(
+                Connection con = DBConnector.getConnection();
+                PreparedStatement pstm = con.prepareStatement(sql)
+        ){
+            pstm.setInt(1,studentId);
+            pstm.setString(2,courseCode);
+            return pstm.executeUpdate() == 1;
+        }
+    }
 }

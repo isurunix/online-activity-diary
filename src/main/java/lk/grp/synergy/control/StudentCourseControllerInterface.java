@@ -9,4 +9,6 @@ import java.sql.SQLException;
 public interface StudentCourseControllerInterface {
 
     boolean addCourse(int studentId, String courseCode, String group) throws SQLException, NamingException;
+
+    boolean removeCourse(String studentId, String courseCode) throws SQLException, NamingException;
 }

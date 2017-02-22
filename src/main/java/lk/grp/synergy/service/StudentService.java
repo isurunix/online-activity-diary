@@ -51,6 +51,12 @@ public class StudentService {
     private ActivityControllerInterface activityController = new ActivityController();
     private StudentCourseControllerInterface studentCourseController = new StudentCourseController();
 
+
+    /**
+     * Get student with a given id
+     * @param userId The student id
+     * @return Student JSON or appropriate response
+     */
     @GET
     @Path("/{id}")
     @Produces("application/json")
@@ -77,82 +83,12 @@ public class StudentService {
         return Response.ok(gson.toJson(jsonResponse), MediaType.APPLICATION_JSON).build();
     }
 
-    @GET
-    @Path("/{id}/activities")
-    @Produces("application/json")
-    public Response getAllActivities(@PathParam("id") String studentId) throws NamingException {
-        List<Activity> activities = null;
-        try {
-            activities = studentController.getActivities(Integer.parseInt(studentId));
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return Response.serverError().build();
-        }
-
-        if(activities != null){
-            String json = gson.toJson(activities);
-            return Response.status(200).entity(json).build();
-        }
-
-        JsonObject jsonResponse = new JsonObject();
-        jsonResponse.addProperty("errorCode","404");
-        jsonResponse.addProperty("error","Resource Not Found");
-
-        return Response.ok(gson.toJson(jsonResponse), MediaType.APPLICATION_JSON).build();
-    }
-
-    @GET
-    @Path("/{id}/course")
-    @Produces("application/json")
-    public Response getCourseList(@PathParam("id") String studentId) throws NamingException {
-        List<Course> courseList = null;
-        try {
-            courseList = studentController.getCourseList(studentId);
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return Response.serverError().build();
-        }
-
-        if(courseList != null){
-            String json = gson.toJson(courseList);
-            return Response.status(200).entity(json).build();
-        }
-
-        JsonObject jsonResponse = new JsonObject();
-        jsonResponse.addProperty("errorCode","404");
-        jsonResponse.addProperty("error","Resource Not Found");
-
-        return Response.ok(gson.toJson(jsonResponse), MediaType.APPLICATION_JSON).build();
-    }
-
-    @POST
-    @Path("/{id}/course")
-    @Produces("application/json")
-    @Consumes("application/json")
-    public Response addMyCourse(@PathParam("id") int studentId, String payload){
-        JsonObject jsonResponse = new JsonObject();
-        StudentCourse studentCourse = gson.fromJson(payload, StudentCourse.class);
-        try {
-            boolean b = studentCourseController.addCourse(studentId, studentCourse.getCourse_code(), studentCourse.getGroup());
-            if(b){
-                jsonResponse.addProperty("responseCode","200");
-                jsonResponse.addProperty("description","success");
-            }else{
-                jsonResponse.addProperty("responseCode",304);
-                jsonResponse.addProperty("description","failed");
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-            jsonResponse.addProperty("responseCode",304);
-            jsonResponse.addProperty("description","failed");
-        } catch (NamingException e) {
-            e.printStackTrace();
-            jsonResponse.addProperty("responseCode",304);
-            jsonResponse.addProperty("description","failed");
-        }
-        return Response.ok(gson.toJson(jsonResponse), MediaType.APPLICATION_JSON).build();
-    }
-
+    /**
+     * Update a given student profile
+     * @param sId Student ID
+     * @param payload Student JSON
+     * @return JSON Response
+     */
     @PUT
     @Path("/{id}")
     @Consumes("application/json")
@@ -195,4 +131,125 @@ public class StudentService {
 
         return Response.ok(gson.toJson(jsonResponse), MediaType.APPLICATION_JSON).build();
     }
+
+    /**
+     * Get all activities for a given student
+     * @param studentId ID of the student
+     * @return JSON response
+     */
+    @GET
+    @Path("/{id}/activities")
+    @Produces("application/json")
+    public Response getAllActivities(@PathParam("id") String studentId){
+        List<Activity> activities = null;
+        try {
+            activities = studentController.getActivities(Integer.parseInt(studentId));
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return Response.serverError().build();
+        } catch (NamingException e) {
+            e.printStackTrace();
+        }
+
+        if(activities != null){
+            String json = gson.toJson(activities);
+            return Response.status(200).entity(json).build();
+        }
+
+        JsonObject jsonResponse = new JsonObject();
+        jsonResponse.addProperty("errorCode","404");
+        jsonResponse.addProperty("error","Resource Not Found");
+
+        return Response.ok(gson.toJson(jsonResponse), MediaType.APPLICATION_JSON).build();
+    }
+
+    /**
+     * Get registered courses for a given student
+     * @param studentId ID of the student
+     * @return JSON Array
+     */
+    @GET
+    @Path("/{id}/course")
+    @Produces("application/json")
+    public Response getCourseList(@PathParam("id") String studentId) {
+        List<Course> courseList = null;
+        try {
+            courseList = studentController.getCourseList(studentId);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return Response.serverError().build();
+        } catch (NamingException e) {
+            e.printStackTrace();
+        }
+
+        if(courseList != null){
+            String json = gson.toJson(courseList);
+            return Response.status(200).entity(json).build();
+        }
+
+        JsonObject jsonResponse = new JsonObject();
+        jsonResponse.addProperty("errorCode","404");
+        jsonResponse.addProperty("error","Resource Not Found");
+
+        return Response.ok(gson.toJson(jsonResponse), MediaType.APPLICATION_JSON).build();
+    }
+
+    /**
+     * Add new registered course for a student
+     * @param studentId ID of the student
+     * @param payload Course data JSON
+     * @return JSON response
+     */
+    @POST
+    @Path("/{id}/course")
+    @Produces("application/json")
+    @Consumes("application/json")
+    public Response addMyCourse(@PathParam("id") int studentId, String payload){
+        JsonObject jsonResponse = new JsonObject();
+        StudentCourse studentCourse = gson.fromJson(payload, StudentCourse.class);
+        try {
+            boolean b = studentCourseController.addCourse(studentId, studentCourse.getCourse_code(), studentCourse.getGroup());
+            if(b){
+                jsonResponse.addProperty("responseCode","200");
+                jsonResponse.addProperty("description","success");
+            }else{
+                jsonResponse.addProperty("responseCode",304);
+                jsonResponse.addProperty("description","failed");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            jsonResponse.addProperty("responseCode",304);
+            jsonResponse.addProperty("description","failed");
+        } catch (NamingException e) {
+            e.printStackTrace();
+            jsonResponse.addProperty("responseCode",304);
+            jsonResponse.addProperty("description","failed");
+        }
+        return Response.ok(gson.toJson(jsonResponse), MediaType.APPLICATION_JSON).build();
+    }
+
+    @DELETE
+    @Path("/{id}/{courseCode}")
+    @Produces("application/json")
+    public Response removeStudentCourse(@PathParam("id") String studentId, @PathParam("courseCode") String courseCode){
+        JsonObject jsonResponse = new JsonObject();
+        try {
+
+            boolean removed = studentCourseController.removeCourse(studentId ,courseCode);
+            if(removed){
+                jsonResponse.addProperty("responseCode","200");
+                jsonResponse.addProperty("description","success");
+            }else{
+                jsonResponse.addProperty("responseCode",304);
+                jsonResponse.addProperty("description","failed");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (NamingException e) {
+            e.printStackTrace();
+        }
+        return Response.ok(gson.toJson(jsonResponse), MediaType.APPLICATION_JSON).build();
+    }
+
+
 }

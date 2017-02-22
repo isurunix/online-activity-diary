@@ -6,6 +6,8 @@ import lk.grp.synergy.model.Course;
 
 import javax.naming.NamingException;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by USER on 1/24/2017.
@@ -32,5 +34,15 @@ public class CourseController implements CourseControllerInterface {
     @Override
     public boolean updateCourse(Course course) throws SQLException {
         return false;
+    }
+
+    @Override
+    public List<String> getAllCourses() throws SQLException, NamingException {
+        ArrayList<Course> courses = courseDAO.getAllCourse();
+        ArrayList<String> courseCodes = new ArrayList<>();
+        courses.forEach(course -> {
+            courseCodes.add(course.getCourseCode());
+        });
+        return courseCodes;
     }
 }

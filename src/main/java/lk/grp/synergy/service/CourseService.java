@@ -20,10 +20,7 @@ import lk.grp.synergy.util.TimeDeserializer;
 import lk.grp.synergy.util.TimeSerializer;
 
 import javax.naming.NamingException;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.sql.SQLException;
@@ -100,4 +97,29 @@ public class CourseService {
 
         return Response.ok(gson.toJson(jsonResponse), MediaType.APPLICATION_JSON).build();
     }
+
+    @GET
+    @Path("/")
+    @Produces("application/json")
+    public Response getAllCourses(){
+        List<String> courses = null;
+        try {
+            courses = courseController.getAllCourses();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (NamingException e) {
+            e.printStackTrace();
+        }
+
+        if(courses!=null){
+            return Response.status(200).entity(gson.toJson(courses)).build();
+        }
+
+        JsonObject jsonResponse = new JsonObject();
+        jsonResponse.addProperty("errorCode","404");
+        jsonResponse.addProperty("error","Resource Not Found");
+
+        return Response.ok(gson.toJson(jsonResponse), MediaType.APPLICATION_JSON).build();
+    }
+
 }
