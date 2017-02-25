@@ -1,10 +1,13 @@
 package lk.grp.synergy.control.impl;
 
+import lk.grp.synergy.control.CourseControllerInterface;
 import lk.grp.synergy.control.StudentControllerInterface;
 import lk.grp.synergy.control.StudentCourseControllerInterface;
 import lk.grp.synergy.db.DBConnector;
 import lk.grp.synergy.db.StudentCourseDAO;
+import lk.grp.synergy.model.Course;
 import lk.grp.synergy.model.Student;
+import lk.grp.synergy.model.StudentCourse;
 
 import javax.naming.NamingException;
 import java.sql.Connection;
@@ -17,29 +20,24 @@ import java.sql.SQLException;
 public class StudentCourseController implements StudentCourseControllerInterface {
     private StudentCourseDAO studentCourseDAO;
     private StudentControllerInterface studentController;
+    private CourseControllerInterface courseController;
 
     public StudentCourseController() {
         studentCourseDAO = new StudentCourseDAO();
         studentController = new StudentControllerImpl();
+        courseController = new CourseController();
     }
 
     @Override
     public boolean addCourse(int studentId, String courseCode, String group) throws SQLException, NamingException {
-        boolean added = false;
-        String sql = "INSERT INTO student_course (`student_id`,`course_code`,`group`) VALUES (?,?,?)";
+        Student student = studentController.getStudent(Integer.toString(studentId));
+        Course course = courseController.getCourse(courseCode);
 
-        try(
-                Connection con = DBConnector.getConnection();
-                PreparedStatement pstm = con.prepareStatement(sql)
-        ){
-            pstm.setInt(1, studentId);
-            pstm.setString(2, courseCode);
-            pstm.setString(3,group);
-
-            added = pstm.executeUpdate() == 1;
+        if(student!=null && course!=null){
+            return studentCourseDAO.addCourse(new StudentCourse(studentId,courseCode,group));
         }
 
-        return added;
+        return false;
     }
 
     @Override

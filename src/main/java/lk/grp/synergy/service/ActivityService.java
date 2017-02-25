@@ -112,6 +112,53 @@ public class ActivityService {
     @Consumes("application/json")
     @Produces("application/json")
     public Response updateActivity(@PathParam("id") int activityId, String payload){
-        return null;
+        JsonObject jsonResponse = new JsonObject();
+        Activity activity = gson.fromJson(payload, Activity.class);
+        activity.setActivityId(activityId);
+        try {
+            boolean b = activityController.updateActivity(activity);
+            if(b){
+                jsonResponse.addProperty("responseCode","200");
+                jsonResponse.addProperty("description","Success");
+                return Response.ok(gson.toJson(jsonResponse), MediaType.APPLICATION_JSON).build();
+            }else{
+                jsonResponse.addProperty("responseCode","304");
+                jsonResponse.addProperty("description","Failed");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            jsonResponse.addProperty("responseCode","304");
+            jsonResponse.addProperty("description","Failed");
+        } catch (NamingException e) {
+            e.printStackTrace();
+            jsonResponse.addProperty("responseCode","304");
+            jsonResponse.addProperty("description","Failed");
+        }
+        return Response.status(304).entity(gson.toJson(jsonResponse)).build();
+    }
+
+    @DELETE
+    @Path("/{id}")
+    @Produces("application/json")
+    public Response deleteActivity(@PathParam("id") int activityId){
+        JsonObject jsonResponse = new JsonObject();
+        try {
+            if(activityController.isActivityExists(activityId)){
+             if(activityController.removeActivity(activityId)){
+                 jsonResponse.addProperty("responseCode","200");
+                 jsonResponse.addProperty("description","Success");
+                 return Response.ok(gson.toJson(jsonResponse), MediaType.APPLICATION_JSON).build();
+             }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (NamingException e) {
+            e.printStackTrace();
+        }
+
+        jsonResponse.addProperty("responseCode","304");
+        jsonResponse.addProperty("description","Failed");
+        return Response.status(304).entity(gson.toJson(jsonResponse)).build();
     }
 }
+

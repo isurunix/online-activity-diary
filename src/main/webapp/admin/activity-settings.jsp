@@ -45,10 +45,10 @@
 
     <!--Plugin CSS-->
     <link rel="stylesheet" type="text/css" href="../css/font-awesome.min.css"/>
-    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="../css/jquery-ui.css">
     <link rel="stylesheet" href="../css/datatables.bootstrap3.min.css">
     <link rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.2/css/bootstrap-select.min.css">
+          href="../css/bootstrap-select.min.css">
     <link rel="stylesheet" href="../css/bootstrap-select.min.css">
     <link rel="stylesheet" href="../css/jquery.timepicker.css">
     <%--<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.css">--%>
@@ -86,6 +86,7 @@
         <div class="col-lg-2 col-md-2 col-sm-2">
             <button id="btnAdd" class="btn btn-default large-button" onclick="showAddForm()">Add Activity</button>
             <button  id="btnUpdate" class="btn btn-default large-button  active-button" onclick="showUpdateForm()">Update Activity</button>
+            <button  id="btnDelete" class="btn btn-default large-button  active-button" onclick="showDeleteForm()">Delete Activity</button>
         </div>
         <!-- sidebar end -->
 
@@ -93,7 +94,9 @@
         <%
             List<String> courseList = adminCourseController.getCourseList(adminId);
         %>
-        <div class="col-lg-10 col-md-10 col-sm-10 settings-content">
+
+        <div id="addFormDiv" class="hidden">
+            <div class="col-lg-10 col-md-10 col-sm-10 settings-content">
             <form id="addNewActivityForm">
                 <div class="form-group">
                     <select class="selectpicker show-tick form-control" title="Course Code" id="courseCode" onchange="searchCourse()" autofocus>
@@ -140,44 +143,107 @@
                     <input id="formAddBtn" type="submit" class="btn btn-default pull-right" value="Add Activity">
                 </div>
             </form>
+        </div>
+        </div>
 
-            <form id="updateActivityForm" class="hidden">
-                <div class="form-group">
-                    <select class="selectpicker show-tick form-control" title="Course Code" id="u_courseCode" onchange="searchCourse()" autofocus>
-                        <%
-                            for (String courseCode: courseList) {
-                        %>
-                        <option value="<%=courseCode%>"><%=courseCode%>
-                        </option>
-                        <%
-                            }
-                            ;
-                        %>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <select class="selectpicker show-tick  form-control" title="Activity" id="activity">
-                        <option value="DAY_SCHOOL">Day School</option>
-                        <option value="CAT">Continuous Assessment Test (CAT)</option>
-                        <option value="LAB">Lab Session</option>
-                        <option value="VIVA">Viva Session</option>
-                        <option value="FE">Final Examination</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <input type="text" class="datepicker form-control" id="u_activityDate" placeholder="Activity Date">
-                </div>
-                <div class="form-group">
-                    <input type="text" id="u_startTime" placeholder="Start Time" class="timepicker form-control">
-                </div>
-                <div class="form-group">
-                    <input type="text"  id="u_endTime" placeholder="End Time" class="timepicker form-control">
-                </div>
-                <div class="form-group">
-                    <input type="submit" class="btn btn-default pull-right" value="Update Activity">
-                </div>
-            </form>
+        <div id="updateDiv" class="hidden">
+            <div class="col-lg-10 col-md-10 col-sm-10 settings-content">
+                <form id="updateActivityCourseSelect">
+                    <div class="form-group">
+                        <select class="selectpicker show-tick form-control" title="Course Code" id="u_courseCode" onchange="getActivitiesForCourse()" autofocus>
+                            <%
+                                for (String courseCode: courseList) {
+                            %>
+                            <option value="<%=courseCode%>"><%=courseCode%>
+                            </option>
+                            <%
+                                }
+                                ;
+                            %>
+                        </select>
+                    </div>
+                </form>
+            </div>
+            <div class="col-lg-10 col-md-10 col-sm-10 settings-content">
+                <form id="updateActivityForm">
+                    <div class="form-group">
+                        <input type="text"  id="u_activityType" placeholder="Activity Type" class="form-control" contenteditable="false">
+                    </div>
+                    <div class="form-group">
+                        <input type="text"  id="u_name" placeholder="Activity" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <input type="text" id="u_activityDate" placeholder="Activity Date" class="datepicker form-control">
+                    </div>
+                    <div class="form-group">
+                        <input type="text" id="u_startTime" placeholder="Start Time" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <input type="text"  id="u_endTime" placeholder="End Time" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <input type="text"  id="u_center" placeholder="Center" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <input type="text"  id="u_group" placeholder="Group" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <input id="formUpdateBtn" type="submit" class="btn btn-default pull-right" value="Update Activity">
+                        <button id="btnPrevious" type="button" class="btn btn-default pull-left" onclick="previousActivity()"><i class="fa fa-chevron-left"></i> </button>
+                        <button id="btnNext" type="button" class="btn btn-default" onclick="getNextActivity()"><i class="fa fa-chevron-right"></i> </button>
+                    </div>
+                </form>
+            </div>
+        </div>
 
+        <div id="deleteDiv" class="hidden">
+            <div class="col-lg-10 col-md-10 col-sm-10 settings-content">
+                <form id="deleteActivityCourseSelect">
+                    <div class="form-group">
+                        <select class="selectpicker show-tick form-control" title="Course Code" id="d_courseCode" onchange="getActivitiesForCourse_d()" autofocus>
+                            <%
+                                for (String courseCode: courseList) {
+                            %>
+                            <option value="<%=courseCode%>"><%=courseCode%>
+                            </option>
+                            <%
+                                }
+                                ;
+                            %>
+                        </select>
+                    </div>
+                </form>
+            </div>
+            <div class="col-lg-10 col-md-10 col-sm-10 settings-content">
+                <form id="deleteActivityForm">
+                    <div class="form-group">
+                        <input type="text"  id="d_activityType" placeholder="Activity Type" class="form-control" contenteditable="false">
+                    </div>
+                    <div class="form-group">
+                        <input type="text"  id="d_name" placeholder="Activity" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <input type="text" id="d_activityDate" placeholder="Activity Date" class="datepicker form-control">
+                    </div>
+                    <div class="form-group">
+                        <input type="text" id="d_startTime" placeholder="Start Time" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <input type="text"  id="d_endTime" placeholder="End Time" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <input type="text"  id="d_center" placeholder="Center" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <input type="text"  id="d_group" placeholder="Group" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <input id="formDeleteBtn" type="submit" class="btn btn-default pull-right" value="Delete Activity">
+                        <button id="d_btnPrevious" type="button" class="btn btn-default pull-left" onclick="previousActivity_d()"><i class="fa fa-chevron-left"></i> </button>
+                        <button id="d_btnNext" type="button" class="btn btn-default" onclick="getNextActivity_d()"><i class="fa fa-chevron-right"></i> </button>
+                    </div>
+                </form>
+            </div>
         </div>
         <!-- end of fields -->
     </div>
@@ -204,11 +270,11 @@
 <%--End Conform Dialog--%>
 
 <!--Plugin JS-->
-<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script src="../js/jquery.js"></script>
+<script src="../js/jquery-ui.js"></script>
 <script src="../js/datatables.min.js"></script>
 <script src="../js/datatables.bootstrap3.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.2/js/bootstrap-select.min.js"></script>
+<script src="../js/bootstrap-select.min.js"></script>
 <script src="../js/jquery-timepicker.min.js"></script>
 
 <!--Bootstrap JS-->

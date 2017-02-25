@@ -44,8 +44,8 @@ public class ActivityController implements ActivityControllerInterface {
     }
 
     @Override
-    public boolean updateActivity(Activity activity) throws SQLException {
-        return false;
+    public boolean updateActivity(Activity activity) throws SQLException, NamingException {
+        return activityDAO.updateActivity(activity);
     }
 
     @Override
@@ -62,12 +62,22 @@ public class ActivityController implements ActivityControllerInterface {
     }
 
     @Override
-    public boolean removeActivity(Activity activity) throws SQLException {
-        return false;
+    public boolean removeActivity(Activity activity) throws SQLException, NamingException {
+        return activityDAO.deleteActivity(activity.getActivityId());
     }
 
     @Override
     public List<Integer> getCollisions(Activity activity) throws SQLException, NamingException {
         return activityDAO.getCollisions(activity);
+    }
+
+    @Override
+    public boolean isActivityExists(int activityId) throws SQLException, NamingException {
+        return activityDAO.getActivityById(activityId) != null;
+    }
+
+    @Override
+    public boolean removeActivity(int activityId) throws SQLException, NamingException {
+        return activityDAO.deleteActivity(activityId);
     }
 }

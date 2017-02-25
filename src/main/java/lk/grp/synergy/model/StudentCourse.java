@@ -1,15 +1,21 @@
 package lk.grp.synergy.model;
 
 public class StudentCourse {
-  private Long student_id;
+  private int student_id;
   private String course_code;
   private String group;
 
-  public Long getStudent_id() {
+  public StudentCourse(int studentId, String courseCode, String group) {
+    this.student_id = studentId;
+    this.course_code = courseCode;
+    this.group = group;
+  }
+
+  public int getStudent_id() {
     return student_id;
   }
 
-  public void setStudent_id(Long student_id) {
+  public void setStudent_id(int student_id) {
     this.student_id = student_id;
   }
 

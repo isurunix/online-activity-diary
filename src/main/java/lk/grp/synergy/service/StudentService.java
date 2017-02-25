@@ -229,7 +229,7 @@ public class StudentService {
     }
 
     @DELETE
-    @Path("/{id}/{courseCode}")
+    @Path("/{id}/course/{courseCode}")
     @Produces("application/json")
     public Response removeStudentCourse(@PathParam("id") String studentId, @PathParam("courseCode") String courseCode){
         JsonObject jsonResponse = new JsonObject();
@@ -239,9 +239,11 @@ public class StudentService {
             if(removed){
                 jsonResponse.addProperty("responseCode","200");
                 jsonResponse.addProperty("description","success");
+                jsonResponse.addProperty("courseCode",courseCode);
             }else{
                 jsonResponse.addProperty("responseCode",304);
                 jsonResponse.addProperty("description","failed");
+                jsonResponse.addProperty("courseCode",courseCode);
             }
         } catch (SQLException e) {
             e.printStackTrace();

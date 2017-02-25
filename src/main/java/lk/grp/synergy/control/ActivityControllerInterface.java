@@ -37,7 +37,7 @@ public interface ActivityControllerInterface {
      * @param activity modified activity
      * @return true if update successful, false otherwise
      */
-    public boolean updateActivity(Activity activity) throws SQLException;
+    public boolean updateActivity(Activity activity) throws SQLException, NamingException;
 
     /**
      * Add a new activity
@@ -51,7 +51,11 @@ public interface ActivityControllerInterface {
      * @param activity activity to be removed
      * @return true if removed
      */
-    public boolean removeActivity(Activity activity) throws SQLException;
+    public boolean removeActivity(Activity activity) throws SQLException, NamingException;
 
     List<Integer> getCollisions(Activity activity) throws SQLException, NamingException;
+
+    boolean isActivityExists(int activityId) throws SQLException, NamingException;
+
+    boolean removeActivity(int activityId) throws SQLException, NamingException;
 }

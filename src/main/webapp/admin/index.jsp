@@ -54,7 +54,8 @@
     <!--Plugin CSS-->
     <link rel="stylesheet" type="text/css" href="../css/font-awesome.min.css"/>
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-    <link rel="stylesheet" href="../css/datatables.bootstrap3.min.css">
+    <%--<link rel="stylesheet" href="../css/datatables.bootstrap3.min.css">--%>
+    <link rel="stylesheet" type="text/css" href="../DataTables/datatables.min.css"/>
     <link rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.2/css/bootstrap-select.min.css">
     <link rel="stylesheet" href="../css/bootstrap-select.min.css">
@@ -156,6 +157,7 @@
     <table id="activityTable" width="100%" class="table table-striped table-bordered table-responsive">
         <thead>
         <tr>
+            <th class="hidden">ID</th>
             <th>Course</th>
             <th>Activity</th>
             <th>Date</th>
@@ -168,6 +170,7 @@
             <%
                 List<Activity> allActivities = activityController.getAllActivities();
                 for (Activity activity : allActivities) {
+                    int activityId = activity.getActivityId();
                     String courseCode = activity.getCourseCode();
                     String name = activity.getName();
                     String date = (DateTimeFormatter.ofPattern("yyyy-MM-dd")).format(activity.getDate());
@@ -176,6 +179,7 @@
                     String venue = activity.getVenue();
             %>
             <tr>
+                <td class="hidden"><%=activityId%></td>
                 <td><%=courseCode%></td>
                 <td><%=name%></td>
                 <td><%=date%></td>
@@ -223,7 +227,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Modal Header</h4>
+                <h4 class="modal-title">Add Activity</h4>
             </div>
             <div class="modal-body">
                 <form id="addNewActivityForm">
@@ -259,12 +263,18 @@
                         <input type="text"  id="endTime" placeholder="End Time" class="timepicker form-control">
                     </div>
                     <div class="form-group">
+                        <input type="text"  id="center" placeholder="Center" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <input type="text"  id="group" placeholder="Group" class="form-control">
+                    </div>
+                    <div class="form-group">
 
                     </div>
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" >Save</button>
+                <button type="button" class="btn btn-default" onclick="saveActivity()">Save</button>
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
             </div>
         </div>
@@ -275,7 +285,8 @@
 <!--Plugin JS-->
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-<script src="../js/datatables.min.js"></script>
+<%--<script src="../js/datatables.min.js"></script>--%>
+<script type="text/javascript" src="../DataTables/datatables.min.js"></script>
 <script src="../js/datatables.bootstrap3.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.2/js/bootstrap-select.min.js"></script>
 <script src="../js/jquery-timepicker.min.js"></script>
