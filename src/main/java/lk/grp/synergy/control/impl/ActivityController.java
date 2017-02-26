@@ -45,7 +45,16 @@ public class ActivityController implements ActivityControllerInterface {
 
     @Override
     public boolean updateActivity(Activity activity) throws SQLException, NamingException {
-        return activityDAO.updateActivity(activity);
+        boolean updated =  activityDAO.updateActivity(activity);
+        if(updated){
+            String message = activity.getCourseCode()+": "+activity.getName()+"\n"+
+                    "Schedule updated\n" +
+                    "Date : "+activity.getDate().format(DateTimeFormatter.ISO_DATE)+"\n " +
+                    "Start Time : " + activity.getStartTime().format(DateTimeFormatter.ofPattern("HH:mm:ss")) + "\n"+
+                    "End Time" + activity.getEndTime().format(DateTimeFormatter.ofPattern("HH:mm:ss"));
+            notificationReqDAO.addNotificationReq(message,activity.getCourseCode());
+        }
+        return updated;
     }
 
     @Override

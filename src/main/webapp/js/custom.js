@@ -160,7 +160,10 @@ $("#addNewActivityForm").submit(function (e) {
       openConfirmDialog(collisionCount);
 
     } else {
-      saveActivity();
+      var conf = confirm("Continue adding new activity?")
+      if(conf === true){
+        saveActivity();
+      }
       console.log(data);
     }
   });
@@ -179,30 +182,87 @@ $("#updateActivityForm").submit(function (e) {
   var group = $("#u_group").val();
   var activityId = activityList[currentActivity].activityId;
 
-  $.ajax({
-    type: "PUT",
-    url: "http://localhost:8080/oad/oad-api/activity/" + activityId,
-    data: JSON.stringify({
-      "activityId": activityId,
-      "activityType": aType,
-      "name": name,
-      "date": aDate,
-      "startTime": startTime,
-      "endTime": endTime,
-      "venue": center,
-      "group": group,
-      "courseCode": courseCode
-    }),
-    contentType: 'application/json',
-    dataType: 'application/json',
-    success: function () {
-      var resCode = postData.responseCode;
-      console.log(postData);
-      if (resCode === 200) {
-        alert("Successfully Updated");
-        location.reload();
-      } else {
-        console.log(postData);
+  $.get("http://localhost:8080/oad/oad-api/activity/" + aDate + "/" + startTime + "/" + endTime, function (data, status) {
+    var collisionCount = data.collisionCount;
+    console.log(collisionCount);
+    if (collisionCount > 1) {
+      console.log("Open Confirm Dialog");
+      $("#dialog-confirm").html("<p>Updated activity clashes with " + collisionCount-1 + " other activities.<br/> Continue ? </p>");
+      $("#dialog-confirm").dialog({
+        resizable: false,
+        modal: true,
+        title: "Confirm Add Activity",
+        height: 150,
+        width: 400,
+        buttons: {
+          "Yes": function () {
+            $.ajax({
+              type: "PUT",
+              url: "http://localhost:8080/oad/oad-api/activity/" + activityId,
+              data: JSON.stringify({
+                "activityId": activityId,
+                "activityType": aType,
+                "name": name,
+                "date": aDate,
+                "startTime": startTime,
+                "endTime": endTime,
+                "venue": center,
+                "group": group,
+                "courseCode": courseCode
+              }),
+              contentType: 'application/json',
+              dataType: 'application/json',
+              success: function () {
+                var resCode = postData.responseCode;
+                console.log(postData);
+                if (resCode === 200) {
+                  alert("Successfully Updated");
+                  location.reload();
+                } else {
+                  console.log(postData);
+                }
+              }
+            });
+            $(this).dialog('close');
+          },
+          "No": function () {
+            $(this).dialog('close');
+          }
+        }
+      });
+    } else {
+      var conf = confirm("Continue updating activity ?");
+      if(conf === true){
+        $.ajax({
+          type: "PUT",
+          url: "http://localhost:8080/oad/oad-api/activity/" + activityId,
+          data: JSON.stringify({
+            "activityId": activityId,
+            "activityType": aType,
+            "name": name,
+            "date": aDate,
+            "startTime": startTime,
+            "endTime": endTime,
+            "venue": center,
+            "group": group,
+            "courseCode": courseCode
+          }),
+          contentType: 'application/json',
+          dataType: 'application/json',
+          success: function () {
+            var resCode = postData.responseCode;
+            console.log(postData);
+            if (resCode === 200) {
+              alert("Successfully Updated");
+              location.reload();
+            } else {
+              console.log(postData);
+            }
+          }
+        })
+          .done(function () {
+            alert("Success");
+          });
       }
     }
   });
@@ -211,17 +271,20 @@ $("#updateActivityForm").submit(function (e) {
 $("#deleteActivityForm").submit(function (e) {
   e.preventDefault();
   var activityId = activityList[currentActivity].activityId;
-  $.ajax({
-    method: "DELETE",
-    url: "http://localhost:8080/oad/oad-api/activity/" + activityId,
-  })
-    .done(function (data) {
-      alert("Success");
+  var conf = confirm("Continue delete activity?");
+  if(conf === true) {
+    $.ajax({
+      method: "DELETE",
+      url: "http://localhost:8080/oad/oad-api/activity/" + activityId,
     })
-    .fail(function (err) {
-      alert("Failed");
-      console.log("Failed: "+err);
-    });
+      .done(function (data) {
+        alert("Success");
+      })
+      .fail(function (err) {
+        alert("Failed");
+        console.log("Failed: " + err);
+      });
+  }
 })
 
 function openConfirmDialog(collisionCount) {
